@@ -3,6 +3,7 @@
         header("Location: /");
     }
 ?>
+
 <!DOCTYPE html>
 <html lang="ru" dir="ltr">
     <head>
@@ -15,7 +16,6 @@
     </head>
     <body>
         <div class="col-md-8 ml-2">
-            <form action="edit.php" method="post">
                 <?php
                     $name = $_POST['name'];
                     require_once "mysql_connect.php";
@@ -138,6 +138,7 @@
                     </table>";
                 }
                 else {
+                    $i = 0;
                     echo "Осталось сдать:";
                     echo "<table class=\"table table-bordered\">
                         <thead class=\"thead thead-dark align-content-center\">
@@ -148,18 +149,22 @@
                             </tr>
                         </thead>
                         <tbody>";
-                    $sql = "SELECT de.`department`, e.`exam`, e.`date` FROM `department_exam`
+                    $sql = "SELECT de.`department`, e.`exam`, e.`date`, de.`exam_id` FROM `department_exam`
                          as de JOIN `exams` as e ON de.`exam_id`= e.`exam_id` WHERE
                          de.`department`=:department";
                     $query = $pdo->prepare($sql);
                     $query->execute(['department' => $department]);
-
+                    $list_exams ='';
+                    $list_id_exams ='';
                     while ($row = $query->fetch(PDO::FETCH_OBJ)) {
+                        $i++;
+                        $list_exams .= ($row->exam.'-');
+                        $list_id_exams .= ($row->exam_id.'-');
                         echo "<tr>
                         <td><p>$row->exam</p></td>
                         <td><p>$row->date</p></td>
                         <td>
-                        <select class=\"form-control mb-2\" name=\"department\" id=\"department\">
+                        <select class=\"form-control mb-2\" name=\"marks\" id=\"exam$i\">
                             <option value = '' selected>Выберите оценку</option>
                             <option value = '5'>5</option>
                             <option value = '4'>4</option>
@@ -172,10 +177,47 @@
                     echo "</tbody>
                     </table>";
                 }
+                $list_exams  = substr($list_exams,0,-1);
+                $list_id_exams = substr($list_id_exams,0,-1);
                 ?>
-                <button type="submit" name="button">Сохранить</button>
-            </form>
+                <button  class="btn btn-success" id="save" name="button">Сохранить</button>
         </div>
     </body>
     <?php require "blocks/footer.php";?>
 </html>
+
+<script>
+$('#save').click(function () {
+
+    var i = <?php echo $i; ?>;
+    var name = "<?php echo $name;?>";
+    var department = "<?php echo $department;?>";
+    var group_number = "<?php echo $group_number;?>";
+    var list_exams = "<?php echo $list_exams;?>";
+    var list_id_exams = "<?php echo $list_id_exams;?>";
+    alert(name);
+    alert(list_exams);
+    alert(list_id_exams);
+    alert(department);
+    alert(group_number);
+    var arr=[];
+    for (var j = 1; j <= i; j++) {
+        arr[j-1] = $('#exam'+j).val();
+    }
+    var marks = arr.join('-');
+    alert(marks);
+    $.ajax({
+        url: 'ajax/edit_entrant.php',
+        type: 'POST',
+        cache: false,
+        data: {'list_exams': list_exams,'list_id_exams': list_id_exams,'marks': marks,
+        'name': name, 'department': department, 'group_number': group_number},
+        dataType: 'html',
+        success: function (data) {
+            if (data == 'Готово') {
+                $('#save').text('Готово');
+            }
+        }
+    });
+});
+</script>
