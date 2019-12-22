@@ -64,12 +64,15 @@
                             }
                         echo '</select>';
                     echo "<p><b>Поток: </b>$flow</p>";
-                    echo "<p><b>Номер группы: </b>$group_number</p>";
+                    echo "<p><b>Номер группы: </b>$group_number</p>";//////////////////////////////////////////////////////////////
                     echo "<p>Сменить номер группы на:</p>";
                     echo '<select class="form-control mb-2" name="group_number" id="group_number_select">';
 
-                            $sql = 'SELECT `group_number` FROM `groups` ORDER BY `group_number`';
-                            $query = $pdo->query($sql);
+                            // $sql = 'SELECT `group_number` FROM `groups` ORDER BY `group_number`';
+                            $sql = "SELECT gd.`group_number` FROM `group_department` as gd JOIN `groups`as g ON
+                             g.`group_number` = gd.`group_number` WHERE gd.`department` = :department";
+                             $query = $pdo->prepare($sql);
+                             $query->execute(['department' => $department]);
                             while ($row = $query->fetch(PDO::FETCH_OBJ)){
                                 if ($row->group_number == $group_number) {
                                     $selected = 'selected';
@@ -324,10 +327,33 @@ $('#save_change_mark').click(function () {
              data: {'group_number_old': group_number_old,'group_number_new': group_number_new,'name': name},
              dataType: 'html',
              success: function () {
-                 alert("updateGroup"+group_number_new);
+                 alert("Сменили группу на "+group_number_new);
              }
          });
      }
  }
 
+
+ $(document).ready(function() {
+     $('#department_select').on("change",function() {
+         var val = $(this).val();
+         if (val != '' ) {
+             $.ajax({
+                 url: 'ajax/selected_edit.php',
+                 type: 'POST',
+                 cache: false,
+                 data: {'department': val},
+                 dataType: 'html',
+                 success: function (update_messages){
+                     $('#group_number_select').text('');
+                     $('#group_number_select').prepend(update_messages);
+                 }
+             });
+             $('#group_number_select').prop('disabled', false);
+         }
+         else {
+             $('#group_number_select').prop('disabled', true);
+         }
+     });
+ });
 </script>
