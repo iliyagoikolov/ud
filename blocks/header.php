@@ -2,7 +2,7 @@
   <h5 class="my-0 mr-md-auto font-weight-normal"><a class="p-2" href="/">Абитуриенты</a></h5>
   <nav class="my-2 my-md-0 mr-md-3">
     <!-- <a class="p-2 text-dark" href="/">На Главную</a> -->
-    <a class="p-2 text-dark" href="/contacts.php">Консультации и экзамены</a>
+    <!-- <a class="p-2 text-dark" href="/date_of_consultation.php">Консультации и экзамены</a> -->
     <?php
         if ($_COOKIE['log']!= '')
         {

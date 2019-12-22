@@ -2,10 +2,8 @@
     $name = trim(filter_var($_POST['name'], FILTER_SANITIZE_STRING));
     $surname = trim(filter_var($_POST['surname'], FILTER_SANITIZE_STRING));
     $patronymic = trim(filter_var($_POST['patronymic'], FILTER_SANITIZE_STRING));
-    // $sheet_number = trim(filter_var($_POST['sheet_number'], FILTER_SANITIZE_STRING));
     $faculty = trim(filter_var($_POST['faculty'], FILTER_SANITIZE_STRING));
     $department = trim(filter_var($_POST['department'], FILTER_SANITIZE_STRING));
-    // $flow = trim(filter_var($_POST['flow'], FILTER_SANITIZE_STRING));
     $group_number = trim(filter_var($_POST['group_number'], FILTER_SANITIZE_STRING));
     $error='';
     if (strlen($surname) <= 3) {
@@ -25,16 +23,23 @@
     }
     $group_exists = false;
     require_once '../mysql_connect.php';
-    $sql ='SELECT `group_number` FROM `groups` WHERE `group_number` = :group_number';
+    $sql ="SELECT gd.`group_number` FROM `group_department` as gd
+    JOIN `groups`as g  ON g.`group_number` = gd.`group_number`
+    WHERE gd.`department` = :department";
     $query = $pdo->prepare($sql);
-    $query->execute(['group_number' => $group_number]);
-    while ($row = $query->fetchAll(PDO::FETCH_OBJ)){
-        $group_exists = true;
+    $query->execute(['department' => $department]);
+    while ($row = $query->fetch(PDO::FETCH_OBJ)){
+        if ($row->group_number == $group_number ) {
+            $group_exists = true;
+        }
     }
     if (!$group_exists) {
-            $sql ='SELECT `group_number` FROM `groups`';
-            $error = 'Нет такой группы. Список существующих групп: ';
-            $query = $pdo->query($sql);
+            $sql ="SELECT gd.`group_number` FROM `group_department` as gd
+            JOIN `groups`as g  ON g.`group_number` = gd.`group_number`
+            WHERE gd.`department` = :department";
+            $error = 'Нет такой группы. Список существующих групп для данной кафедры: ';
+            $query = $pdo->prepare($sql);
+            $query->execute(['department' => $department]);
 
              while ($row = $query->fetch(PDO::FETCH_OBJ)){
                 $error .= "$row->group_number, ";
