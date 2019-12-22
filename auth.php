@@ -43,34 +43,16 @@
                             if ($faculty != '')
                                 echo "<p><b>Факультет: </b>".$faculty."</p>";
                             else
-                                echo "<p><b>Факультет: </b>Отсутствует</p>";
+                                echo "<p><b>Факультет: </b>ФКТИ</p>";
                             if ($department != '')
                                 echo "<p><b>Кафедра: </b>".$department."</p>";
                             else
-                                echo "<p><b>Кафедра: </b>Отсутствует</p>";
-                            if ($flow != '')
-                                echo "<p><b>Поток: </b>".$flow."</p>";
-                            else
-                                echo "<p><b>Поток: </b>Отсутствует</p>";
+                                echo "<p><b>Кафедра: </b>Компьютерная безопасность</p>";
+
                             if ($group_number != '')
                                 echo "<p><b>Номер группы: </b>".$group_number."</p>";
                             else
-                                echo "<p><b>Номер группы: </b>Отсутствует</p>";
-                            $count_of_exams = 1;
-                            if ($count_of_exams != '')
-                            {
-                                echo "<p><b>Сдано экзаменов: </b>".$count_of_exams."</p>";
-                                echo "<p><b>Результаты:</p></b>";
-                                echo "
-                                <ul>
-                                  <li>Кофе</li>
-                                  <li>Чай</li>
-                                  <li>Молоко</li>
-                                </ul>
-                                ";
-                            }
-                            elseif ($count_of_exams == 0)
-                                echo "<p><b>Сдано экзаменов: </b>$count_of_exams</p>";
+                                echo "<p><b>Номер группы: </b>7362</p>";
 
 
                         ?>

@@ -31,8 +31,9 @@
                     <td><p>$row->department</p></td>
                     <td>
                     <button type='button' class=\"delete btn btn-danger mb-2\" id='$row->name'>Забрал документы</button>
-                    <button formaction=\"edit.php\" formmethod=\"post\" type=\"submit\" name=\"name\" class='edit btn btn-info' value = \"$row->name\">Изменить</button>
-                    <button formaction=\"date_of_consultation.php\" formmethod=\"post\" type=\"submit\" name=\"name\" class='edit btn btn-success' value = \"$row->name\">Даты</button>
+                    <button formaction=\"edit.php\" formmethod=\"post\" type=\"submit\" name=\"name\" class='edit btn btn-info mb-2' value = \"$row->name\">Изменить</button>
+                    <button formaction=\"date_of_consultation.php\" formmethod=\"post\" type=\"submit\" name=\"name\" class='edit btn btn-success mb-2' value = \"$row->name\">Даты</button>
+                    <button formaction=\"reference_student.php\" formmethod=\"post\" type=\"submit\" name=\"name\" class='edit btn btn-warning mb-2' value = \"$row->name\">Выдать справку</button>
                     </td>
                     </tr>
                     </form>";
