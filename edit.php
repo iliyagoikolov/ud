@@ -196,10 +196,6 @@
                         </thead>
                         <tbody>";
 
-    // $sql = "SELECT DISTINCT e.`exam`, e.`exam_id`, e.`date` FROM `department_exam`
-    //         as de JOIN `exams` as e JOIN `sheet` as s ON (e.`exam_id`=de.`exam_id`)
-    //         WHERE de.`department`= :department && e.`exam_id`
-    //         NOT IN (SELECT `exam_id` FROM `sheet` WHERE `sheet`.`name` = :name)";
     $sql ="SELECT  DISTINCT `exam`,`exams`.`exam_id`, `date` FROM `departments` JOIN `department_exam`
     JOIN `exams` ON `department_exam`.`exam_id`= `exams`.`exam_id` WHERE
     `department_exam`.`department` = :department && `exam` NOT IN
@@ -257,7 +253,7 @@ $('#save_more').click(function () {
     }
     var marks = arr.join('-');
     updateDepartment(department, name);
-
+    updateGroup(group_number, name);
     $.ajax({
         url: 'ajax/edit_entrant.php',
         type: 'POST',
@@ -285,6 +281,7 @@ $('#save_change_mark').click(function () {
     }
     var marks = arr.join('-');
     updateDepartment(department, name);
+    updateGroup(group_number, name);
     $.ajax({
         url: 'ajax/change_mark.php',
         type: 'POST',
